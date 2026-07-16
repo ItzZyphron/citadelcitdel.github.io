@@ -1,389 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Site</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Forge a Modpack — for Prism Launcher</title>
+<meta name="description" content="Describe the modpack you want, or list a few mods, and get a ready-to-import .mrpack for Prism Launcher." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0E2A4A;
-    --bg-line: #1B3E63;
-    --grid-line: rgba(255,255,255,0.08);
-    --paper: #F2F6FA;
-    --muted: #9FB3C8;
-    --pen: #FF6B4A;
-    --note: #FFC857;
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background-color: var(--bg);
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 32px 32px;
-    color: var(--paper);
-    font-family: var(--font-body);
-    line-height: 1.6;
-  }
-
-  a { color: inherit; }
-
-  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-
-  /* ---- Annotations (the signature element) ---- */
-  .note-tag {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: #14213D;
-    background: var(--note);
-    border: 1px dashed #8a6d1f;
-    padding: 4px 10px;
-    border-radius: 3px;
-    transform: rotate(-1.5deg);
-    white-space: nowrap;
-  }
-  .note-tag::before { content: "✎ "; }
-
-  body.hide-notes .note-tag,
-  body.hide-notes .note-toggle-label { display: none !important; }
-
-  #note-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 50;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    background: var(--bg-line);
-    color: var(--paper);
-    border: 1px solid var(--muted);
-    padding: 10px 14px;
-    border-radius: 30px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-  }
-  #note-toggle:hover { border-color: var(--note); }
-  #note-toggle .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--note);
-  }
-
-  /* ---- Nav ---- */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    backdrop-filter: blur(6px);
-    background: rgba(14, 42, 74, 0.85);
-    border-bottom: 1px solid var(--grid-line);
-  }
-  nav.wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 18px;
-    padding-bottom: 18px;
-  }
-  .logo {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: -0.02em;
-  }
-  .logo span { color: var(--note); }
-  .nav-links { display: flex; gap: 28px; font-size: 14px; }
-  .nav-links a { text-decoration: none; color: var(--muted); transition: color 0.2s; }
-  .nav-links a:hover { color: var(--paper); }
-
-  /* ---- Hero ---- */
-  .hero {
-    padding: 120px 0 100px;
-    position: relative;
-  }
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 18px;
-    display: block;
-  }
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(40px, 7vw, 76px);
-    line-height: 1.02;
-    letter-spacing: -0.03em;
-    font-weight: 700;
-    max-width: 780px;
-  }
-  h1 .accent { color: var(--pen); }
-  .hero p {
-    margin-top: 24px;
-    max-width: 520px;
-    font-size: 18px;
-    color: var(--muted);
-  }
-  .hero-actions {
-    margin-top: 36px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .btn {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 15px;
-    padding: 13px 26px;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-block;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .btn-primary {
-    background: var(--pen);
-    color: #14213D;
-  }
-  .btn-secondary {
-    border: 1px solid var(--muted);
-    color: var(--paper);
-  }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-primary:hover { box-shadow: 0 6px 18px rgba(255,107,74,0.35); }
-
-  /* ---- Section shared ---- */
-  section { padding: 90px 0; border-top: 1px solid var(--grid-line); }
-  .section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 48px;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  h2 {
-    font-family: var(--font-display);
-    font-size: clamp(28px, 4vw, 40px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
-  .section-num {
-    font-family: var(--font-mono);
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  /* ---- About ---- */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 60px;
-  }
-  .about-text p { color: var(--muted); font-size: 16px; margin-bottom: 16px; max-width: 480px; }
-  .stat-list { display: flex; flex-direction: column; gap: 20px; }
-  .stat { border-left: 2px solid var(--pen); padding-left: 16px; }
-  .stat b { font-family: var(--font-display); font-size: 28px; display: block; }
-  .stat span { font-size: 13px; color: var(--muted); font-family: var(--font-mono); }
-
-  /* ---- Work / cards ---- */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .card {
-    background: var(--bg-line);
-    border: 1px solid var(--grid-line);
-    border-radius: 6px;
-    padding: 28px;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-  .card:hover { transform: translateY(-4px); border-color: var(--pen); }
-  .card-num { font-family: var(--font-mono); color: var(--pen); font-size: 13px; }
-  .card h3 {
-    font-family: var(--font-display);
-    font-size: 20px;
-    margin: 14px 0 10px;
-  }
-  .card p { color: var(--muted); font-size: 14px; }
-
-  /* ---- Contact ---- */
-  .contact-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 24px;
-    background: var(--bg-line);
-    border: 1px dashed var(--muted);
-    border-radius: 8px;
-    padding: 44px;
-  }
-  .contact-box h2 { margin-bottom: 8px; }
-  .contact-box p { color: var(--muted); }
-  .email-link {
-    font-family: var(--font-mono);
-    font-size: 18px;
-    color: var(--note);
-    text-decoration: none;
-    border-bottom: 1px solid var(--note);
-    padding-bottom: 2px;
-  }
-
-  footer {
-    padding: 32px 0;
-    border-top: 1px solid var(--grid-line);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  @media (max-width: 720px) {
-    .nav-links { display: none; }
-    .about-grid { grid-template-columns: 1fr; gap: 32px; }
-    .card-grid { grid-template-columns: 1fr; }
-    .contact-box { flex-direction: column; align-items: flex-start; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { transition: none !important; }
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--note);
-    outline-offset: 3px;
-  }
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header>
-  <nav class="wrap">
-    <div class="logo">Your<span>Name</span></div>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#work">Work</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
+<header class="site-header">
+  <div class="site-header__mark">⛏</div>
+  <div>
+    <h1>Forge a Modpack</h1>
+    <p class="site-header__sub">Built for <strong>Prism Launcher</strong> · sourced from <strong>Modrinth</strong> · up to 200 mods</p>
+  </div>
 </header>
 
-<section class="hero wrap" style="border-top:none;">
-  <span class="eyebrow">Draft v0.1 — ready to build on</span>
-  <h1>This is your <span class="accent">blank page.</span><br>Make it say something.</h1>
-  <p>Swap this line for whatever you actually do — designer, developer, writer, a project you're launching. This whole page is a sketch, not a finished site.</p>
-  <div class="hero-actions">
-    <a href="#work" class="btn btn-primary">See the work</a>
-    <a href="#contact" class="btn btn-secondary">Get in touch</a>
-    <span class="note-tag">edit hero text in the &lt;section class="hero"&gt; block</span>
-  </div>
+<main class="workbench">
+
+  <section class="bench-panel" aria-label="Build settings">
+    <div class="field-row">
+      <label class="field">
+        <span>Minecraft version</span>
+        <select id="gameVersion"></select>
+      </label>
+      <label class="field">
+        <span>Mod loader</span>
+        <select id="loader"></select>
+      </label>
+    </div>
+
+    <div class="mode-tabs" role="tablist">
+      <button type="button" class="mode-tab mode-tab--active" data-mode="type">Pick a type</button>
+      <button type="button" class="mode-tab" data-mode="list">Give a mod list</button>
+    </div>
+
+    <div id="typePanel" class="mode-panel">
+      <p class="field-hint">Choose one or more flavors — the pack fills in well-regarded mods that match.</p>
+      <div id="categoryChips" class="chip-row"></div>
+    </div>
+
+    <div id="listPanel" class="mode-panel" hidden>
+      <label class="field">
+        <span>Mods you want (one per line)</span>
+        <textarea id="modList" rows="5" placeholder="Sodium&#10;JEI&#10;Waystones"></textarea>
+      </label>
+      <label class="checkbox-field">
+        <input type="checkbox" id="fillRemaining" checked />
+        <span>Fill remaining slots with similar, well-regarded mods</span>
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Pack size <span id="targetCountLabel">60</span> mods</span>
+      <input type="range" id="targetCount" min="5" max="200" value="60" />
+    </label>
+
+    <label class="checkbox-field">
+      <input type="checkbox" id="includeOptional" />
+      <span>Include optional dependencies (usually not needed)</span>
+    </label>
+
+    <label class="field">
+      <span>Pack name</span>
+      <input type="text" id="packName" placeholder="My Modpack" />
+    </label>
+
+    <button type="button" id="generateBtn" class="btn btn--primary">Generate pack</button>
+  </section>
+
+  <section class="ticket" aria-label="Build manifest">
+    <div class="ticket__head">
+      <span class="ticket__title">Build Manifest</span>
+      <span id="progressLabel" class="ticket__count">0 / 60 mods</span>
+    </div>
+    <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+    <p id="statusLine" class="status-line">Set your options and hit Generate.</p>
+
+    <div id="ticket" class="ticket__list"></div>
+
+    <button type="button" id="downloadBtn" class="btn btn--accent" hidden>Download .mrpack</button>
+
+    <div id="skippedPanel" class="skipped-panel" hidden>
+      <p class="skipped-panel__title">Skipped</p>
+      <ul id="skippedList"></ul>
+    </div>
+  </section>
+
+</main>
+
+<section class="howto" aria-label="How to import into Prism Launcher">
+  <h2>Importing into Prism Launcher</h2>
+  <ol>
+    <li>Download the <code>.mrpack</code> file above.</li>
+    <li>In Prism Launcher, click <strong>Add Instance</strong> → <strong>Import</strong>.</li>
+    <li>Select the downloaded file. Prism installs the loader and every mod automatically.</li>
+    <li>Hit <strong>Play</strong>.</li>
+  </ol>
 </section>
 
-<section id="about">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>About</h2>
-      <span class="section-num">01 / 03</span>
-    </div>
-    <div class="about-grid">
-      <div class="about-text">
-        <p>Write two or three sentences here about who you are and what you're working on. Keep it plain and specific — what you actually do, not how you'd sell it.</p>
-        <p>This paragraph is a second beat: a detail, a focus area, or what you're looking for right now (clients, collaborators, a job, an audience).</p>
-        <span class="note-tag">edit the two &lt;p&gt; tags in #about</span>
-      </div>
-      <div class="stat-list">
-        <div class="stat"><b>3+</b><span>YEARS / PROJECTS / WHATEVER FITS</span></div>
-        <div class="stat"><b>12</b><span>ANOTHER NUMBER THAT MATTERS TO YOU</span></div>
-        <div class="stat"><b>100%</b><span>CUSTOM CODE, NO BUILDER</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="work">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Work</h2>
-      <span class="section-num">02 / 03</span>
-    </div>
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-num">01</div>
-        <h3>Project One</h3>
-        <p>Short description of what it is and what you did. Link it if it's live.</p>
-      </div>
-      <div class="card">
-        <div class="card-num">02</div>
-        <h3>Project Two</h3>
-        <p>Same pattern — swap the title and description for your real work.</p>
-      </div>
-      <div class="card">
-        <div class="card-num">03</div>
-        <h3>Project Three</h3>
-        <p>Delete this card entirely if you only have two things to show.</p>
-      </div>
-    </div>
-    <div style="margin-top:20px;"><span class="note-tag">duplicate or delete .card blocks in #work as needed</span></div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Contact</h2>
-      <span class="section-num">03 / 03</span>
-    </div>
-    <div class="contact-box">
-      <div>
-        <h2>Let's talk.</h2>
-        <p>Replace this email with your real one.</p>
-      </div>
-      <a href="mailto:you@example.com" class="email-link">you@example.com</a>
-    </div>
-  </div>
-</section>
-
-<footer class="wrap">
-  <span>© 2026 Your Name — built with plain HTML/CSS, hosted free on GitHub Pages</span>
-  <span>site status: draft</span>
+<footer class="site-footer">
+  <p>All mods are sourced directly from Modrinth's public API. This site never hosts or bundles mod files itself.</p>
 </footer>
 
-<button id="note-toggle" aria-pressed="true">
-  <span class="dot"></span>
-  <span class="note-toggle-label">Edit guide: ON</span>
-</button>
-
-<script>
-  const btn = document.getElementById('note-toggle');
-  btn.addEventListener('click', () => {
-    const hidden = document.body.classList.toggle('hide-notes');
-    btn.setAttribute('aria-pressed', String(!hidden));
-    btn.querySelector('.dot').style.background = hidden ? '#556' : 'var(--note)';
-    if (!btn.querySelector('.note-toggle-label')) return;
-  });
-</script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>
